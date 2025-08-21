@@ -135,6 +135,8 @@ class ProcessConsultationTool:
     
     def _create_success_response(self, results: Dict[str, Any], process_number: str, search_info: Dict[str, Any]) -> Dict[str, Any]:
         """Create a successful response structure."""
+        # Compat layer: API pode retornar data_details (novo) ou data (antigo)
+        details = results.get('data_details') or results.get('data') or results
         return {
             "status": "success",
             "tool": "process_consultation",
@@ -147,11 +149,11 @@ class ProcessConsultationTool:
                 "user_id": search_info.get('user_id'),
                 "user_role": search_info.get('user_role')
             },
-            "data": results,
+            "data_details": results,
             "summary": {
-                "total_processes": results.get('total_processos', 0),
-                "document_searched": results.get('documento', process_number),
-                "search_completed_at": results.get('search_completed_at')
+                "total_processes": details.get('total_processos', 0),
+                "document_searched": details.get('documento', process_number),
+                "search_completed_at": details.get('search_completed_at')
             }
         }
     

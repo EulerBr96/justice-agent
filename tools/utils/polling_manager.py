@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class PollingConfig:
     """Configuration for polling behavior."""
     initial_interval: float = 1.0      # Start with 1 second
-    max_interval: float = 30.0         # Maximum 30 seconds between polls
+    max_interval: float = 5.0         # Maximum 30 seconds between polls
     backoff_multiplier: float = 1.5    # Exponential backoff factor
     max_wait_time: float = 900.0       # Maximum total wait time (15 minutes)
     timeout_buffer: float = 30.0       # Buffer before timeout to allow graceful completion
