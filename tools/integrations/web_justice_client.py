@@ -152,6 +152,7 @@ class WebJusticeClient:
             
             data = response.json()
             logger.info(f"Retrieved {data.get('total_processos', 0)} processes for {document}")
+            logger.info(f"Full API response: {json.dumps(data, indent=2, ensure_ascii=False)}")
             return data
             
         except httpx.HTTPStatusError as e:

@@ -1,10 +1,20 @@
+import sys
+import os
 from agno.agent import Agent
-from agno.models.groq import Groq
+#from agno.models.groq import Groq
+from agno.models.openai import OpenAIChat
 from agno.storage.postgres import PostgresStorage
 from agno.playground import Playground, serve_playground_app
 from dotenv import load_dotenv
 
+# Add the parent directory to Python path to allow absolute imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from tools.process_consultation import consult_legal_process_tool
+
 load_dotenv()
+
+consulta_processo = consult_legal_process_tool
 
 db = PostgresStorage(
     table_name="agent_session",
@@ -14,11 +24,12 @@ db = PostgresStorage(
 )
 
 agent = Agent(
-    model=Groq(id="llama-3.3-70b-versatile"),
+    model=OpenAIChat(id="gpt-4o-mini"),
     name="Justice Agent",
     storage=db,
     add_history_to_messages=True,
-    num_history_runs=3
+    num_history_runs=3,
+    tools=[consulta_processo]
 )
 
 
